@@ -1,0 +1,52 @@
+.root {
+  position: relative;
+  margin-left: -200px;
+  width: 400px;
+
+  .input {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 12px 20px;
+    padding-left: 40px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+
+  .search {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    top: 12px;
+    left: 14px;
+    opacity: 0.3;
+  }
+
+  .clear {
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    opacity: 0.3;
+    cursor: pointer;
+    transition: opacity 0.1s ease-in;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 1400px) {
+    margin-left: 0;
+  }
+
+  @media (max-width: 1200px) {
+    width: 300px;
+    margin: 0 20px;
+  }
+
+  @media (max-width: 450px) {
+    // max-width: 250px;
+    width: 100%;
+  }
+}
