@@ -30,6 +30,16 @@
     }
   }
 
+  @media (max-width: 991px) {
+    &__link {
+      width: 240px;
+    }
+
+    &__cart {
+      min-width: 150px;
+    }
+  }
+
   @media (max-width: 819px) {
     padding: 40px 10px 0;
 

@@ -12,3 +12,34 @@
 .description {
   font-size: 22px;
 }
+
+.button {
+  margin-top: 20px;
+  span {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 819px) {
+  .root {
+    padding: 50px 10px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    span {
+      font-size: 36px;
+    }
+  }
+
+  .description {
+    font-size: 20px;
+  }
+
+  .button {
+    span {
+      font-size: 20px;
+    }
+  }
+}

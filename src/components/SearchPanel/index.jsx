@@ -1,20 +1,22 @@
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 
-import { SearchContext } from '../../App';
+import { setSearchValue } from '../../redux/Slices/filterSlise';
 
 import styles from './SearchPanel.module.scss';
 
 const SearchPanel = () => {
-  const { searchValue, setSearchValue } = useContext(SearchContext);
+  const dispatch = useDispatch();
+  const { searchValue } = useSelector((state) => state.filter);
   const inputRef = useRef();
 
   const onCLickRef = () => {
-    setSearchValue('');
+    dispatch(setSearchValue(''));
     inputRef.current.focus();
   };
 
   const onChangeInput = (e) => {
-    setSearchValue(e.target.value);
+    dispatch(setSearchValue(e.target.value));
   };
 
   return (
