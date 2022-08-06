@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { FC, memo, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { SortType } from '../@types/types';
 
-import { setSortType } from '../redux/Slices/filterSlise.js';
+import { setSortType } from '../redux/Slices/filterSlise';
+import { RootState } from '../redux/store';
 
-const sortArr = [
+const sortArr: SortType[] = [
   'Popular',
   'Alphabet (A-Z)',
   'Alphabet (Z-A)',
@@ -11,35 +13,35 @@ const sortArr = [
   'Price (Low-High)',
 ];
 
-const Sort = () => {
+const Sort: FC = memo(() => {
   const dispatch = useDispatch();
 
   const [sortPopup, setSortPopup] = useState(false);
-  const { sortType } = useSelector((state) => state.filter);
-  const sortRef = useRef();
+  const { sortType } = useSelector((state: RootState) => state.filter);
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const onSetSort = (sortName) => {
+  const onSetSort = (sortName: SortType) => {
     dispatch(setSortType(sortName));
     setSortPopup(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.path.includes(sortRef.current)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (sortRef.current && !e.composedPath().includes(sortRef.current)) {
         setSortPopup(false);
       }
     };
 
     document.body.addEventListener('click', handleClickOutside);
 
-    return () => +document.body.removeEventListener('click', handleClickOutside);
+    return () => document.body.removeEventListener('click', handleClickOutside);
   }, []);
 
   return (
     <div ref={sortRef} className="sort">
       <div onClick={() => setSortPopup(!sortPopup)} className="sort__label">
         <svg
-          style={sortPopup ? { transform: 'rotateX(180deg)' } : null}
+          // style= {sortPopup ? { transform: 'rotateX(180deg)' } : ''}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -71,6 +73,6 @@ const Sort = () => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;

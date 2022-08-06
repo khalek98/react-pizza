@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem';
 import { clearItems, selectCart } from '../redux/Slices/cartSlice';
 import CartEmpty from '../components/CartEmpty';
+import { FC } from 'react';
 
-const Cart = () => {
+const Cart: FC = () => {
   const dispatch = useDispatch();
   const { items, totalPrice } = useSelector(selectCart);
 
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item) => sum + item.count, 0);
 
   const onClickClear = () => {
     if (window.confirm('Are you sure you want to delete the entire cart')) {

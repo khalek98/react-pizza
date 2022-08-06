@@ -1,9 +1,20 @@
-import React from 'react';
+import { FC } from 'react';
 import { useDispatch } from 'react-redux';
+import { CartItem } from '../@types/types';
 
 import { addItem, decItem, removeItem } from '../redux/Slices/cartSlice';
 
-const CartItem = ({ id, name, price, count, imageUrl, type, size }) => {
+type CrtItemProps = {
+  id: string;
+  name: string;
+  price: number;
+  count: number;
+  imageUrl: string;
+  type: string;
+  size: number;
+};
+
+const CartItemBlock: FC<CrtItemProps> = ({ id, name, price, count, imageUrl, type, size }) => {
   const dispatch = useDispatch();
 
   const removeItemAfterConfirm = () => {
@@ -13,7 +24,7 @@ const CartItem = ({ id, name, price, count, imageUrl, type, size }) => {
   };
 
   const onIncItem = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as CartItem));
   };
 
   const onDecItem = () => {
@@ -112,4 +123,4 @@ const CartItem = ({ id, name, price, count, imageUrl, type, size }) => {
   );
 };
 
-export default CartItem;
+export default CartItemBlock;

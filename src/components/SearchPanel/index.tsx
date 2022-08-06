@@ -1,22 +1,24 @@
-import { useRef } from 'react';
+import { ChangeEvent, FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 
-import { setSearchValue } from '../../redux/Slices/filterSlise';
+import { setPageIndex, setSearchValue } from '../../redux/Slices/filterSlise';
+import { RootState } from '../../redux/store';
 
 import styles from './SearchPanel.module.scss';
 
-const SearchPanel = () => {
+const SearchPanel: FC = () => {
   const dispatch = useDispatch();
-  const { searchValue } = useSelector((state) => state.filter);
-  const inputRef = useRef();
+  const { searchValue } = useSelector((state: RootState) => state.filter);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onCLickRef = () => {
     dispatch(setSearchValue(''));
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
-  const onChangeInput = (e) => {
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchValue(e.target.value));
+    dispatch(setPageIndex(1));
   };
 
   return (

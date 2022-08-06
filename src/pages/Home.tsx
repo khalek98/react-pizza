@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { FC, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,23 +10,48 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { setFilters } from '../redux/Slices/filterSlise';
 import { fetchPizzas } from '../redux/Slices/pizzaSlice';
+import { RootState, useAppDispatch } from '../redux/store';
+import { FilterSliceState } from '../@types/types';
 
-const Home = () => {
-  const dispatch = useDispatch();
+// export const searchItems = (arr, searchValue) =>
+//   arr.filter((item) => {
+//     return item.name.toLowerCase().includes(searchValue.toLowerCase());
+//   });
+
+// export const myFunc = (pizzasArr, pageIndex, viewCount) => {
+//   const newArr = [];
+//   const offset = (pageIndex - 1) * viewCount;
+//   const length = pizzasArr.length - offset;
+
+//   try {
+//     for (let i = 0; i < (length < viewCount ? length : viewCount); i++) {
+//       newArr.push(pizzasArr[i + offset]);
+//     }
+//     return newArr;
+//   } catch (error) {
+//     console.log(error);
+//     return newArr;
+//   }
+// };
+
+const Home: FC = () => {
+  const dispatch = useAppDispatch();
   const navigte = useNavigate();
   const isMounted = useRef(false);
   const isUrl = useRef(false);
 
-  const { items, status } = useSelector((state) => state.pizza);
-  const { categoryId, sortType, pageIndex } = useSelector((state) => state.filter);
-  const { searchValue } = useSelector((state) => state.filter);
+  const { items, status } = useSelector((state: RootState) => state.pizza);
+  const { categoryId, sortType, pageIndex } = useSelector((state: RootState) => state.filter);
+  const { searchValue } = useSelector((state: RootState) => state.filter);
 
   const searchItem = () =>
-    items.filter((item) => item.name.toLowerCase().includes(searchValue.toLowerCase()));
+    items.filter((item: { name: string }) =>
+      item.name.toLowerCase().includes(searchValue.toLowerCase()),
+    );
 
   const visibleItems = searchItem();
 
-  const sortFunc = (sortType) => {
+  const sortFunc = (sortType: string) => {
     switch (sortType) {
       case 'Popular':
         return {
@@ -89,7 +114,7 @@ const Home = () => {
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
+      const params = qs.parse(window.location.search.substring(1)) as unknown as FilterSliceState;
       dispatch(setFilters(params));
       isUrl.current = true;
     }
@@ -105,6 +130,30 @@ const Home = () => {
     isUrl.current = false;
     // eslint-disable-next-line
   }, [sortType, categoryId, pageIndex]);
+
+  // =====================  v2 ========================================
+
+  // const dispatch = useDispatch();
+  // const { items, status } = useSelector((state) => state.pizza);
+  // const { searchValue, pageIndex, categoryId } = useSelector((state) => state.filter);
+
+  // const filteredItems =
+  //   categoryId === 'All'
+  //     ? items
+  //     : items.filter((item) => item.category === categoryId.toLowerCase());
+
+  // const visibleItems = myFunc(searchItems(filteredItems, searchValue), pageIndex, 3);
+
+  // const getPizzas = async () => {
+  //   dispatch(fetchPizzas());
+  // };
+
+  // useEffect(() => {
+  //   getPizzas();
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // =====================  v2 ========================================
 
   return (
     <>
@@ -124,7 +173,7 @@ const Home = () => {
         <div className="content__items">
           {status === 'loading'
             ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
-            : visibleItems.map((pizza, i) => {
+            : visibleItems.map((pizza, i: number) => {
                 return <PizzaBlock key={i} {...pizza} />;
               })}
         </div>
