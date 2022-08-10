@@ -1,12 +1,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { lazy } from 'react';
 
 import Header from './components/Header';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import NotFound from './pages/NotFound';
-import FullPizza from './pages/FullPizza';
 
 import './scss/app.scss';
+
+const FullPizza = lazy(() => import('./pages/FullPizza'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   return (

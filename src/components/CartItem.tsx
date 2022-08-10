@@ -18,7 +18,9 @@ const CartItemBlock: FC<CrtItemProps> = ({ id, name, price, count, imageUrl, typ
   const dispatch = useDispatch();
 
   const removeItemAfterConfirm = () => {
-    if (window.confirm('Are you sure you want to remove?')) {
+    if (
+      window.confirm(`Are you sure you want to remove pizza "${name} ${type}-dough ${size}cm"?`)
+    ) {
       dispatch(removeItem(id));
     }
   };

@@ -1,159 +1,35 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import qs from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 import Catigories from '../components/Catigories';
-import Sort from '../components/Sort';
+import Pagination from '../components/Pagination';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
-import { setFilters } from '../redux/Slices/filterSlise';
-import { fetchPizzas } from '../redux/Slices/pizzaSlice';
+import Sort from '../components/Sort';
+
 import { RootState, useAppDispatch } from '../redux/store';
-import { FilterSliceState } from '../@types/types';
+import { fetchPizzas } from '../redux/Slices/pizzaSlice';
+import { filteredItems } from '../utils/filteredItemsFunc';
+import { visibleFunc } from '../utils/visibleFunc';
 
-// export const searchItems = (arr, searchValue) =>
-//   arr.filter((item) => {
-//     return item.name.toLowerCase().includes(searchValue.toLowerCase());
-//   });
-
-// export const myFunc = (pizzasArr, pageIndex, viewCount) => {
-//   const newArr = [];
-//   const offset = (pageIndex - 1) * viewCount;
-//   const length = pizzasArr.length - offset;
-
-//   try {
-//     for (let i = 0; i < (length < viewCount ? length : viewCount); i++) {
-//       newArr.push(pizzasArr[i + offset]);
-//     }
-//     return newArr;
-//   } catch (error) {
-//     console.log(error);
-//     return newArr;
-//   }
-// };
+export const amountVisiblePiizas = 3;
 
 const Home: FC = () => {
   const dispatch = useAppDispatch();
-  const navigte = useNavigate();
-  const isMounted = useRef(false);
-  const isUrl = useRef(false);
 
   const { items, status } = useSelector((state: RootState) => state.pizza);
-  const { categoryId, sortType, pageIndex } = useSelector((state: RootState) => state.filter);
-  const { searchValue } = useSelector((state: RootState) => state.filter);
-
-  const searchItem = () =>
-    items.filter((item: { name: string }) =>
-      item.name.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-
-  const visibleItems = searchItem();
-
-  const sortFunc = (sortType: string) => {
-    switch (sortType) {
-      case 'Popular':
-        return {
-          category: 'rating',
-          sort: 'asc',
-        };
-      case 'Alphabet (A-Z)':
-        return {
-          category: 'name',
-          sort: 'asc',
-        };
-      case 'Alphabet (Z-A)':
-        return {
-          category: 'name',
-          sort: 'desc',
-        };
-      case 'Price (Low-High)':
-        return {
-          category: 'price',
-          sort: 'asc',
-        };
-      case 'Price (High-Low)':
-        return {
-          category: 'price',
-          sort: 'desc',
-        };
-      default:
-        return {
-          category: 'rating',
-          sort: 'asc',
-        };
-    }
-  };
-
-  const getPizzas = async () => {
-    const sortObj = sortFunc(sortType);
-
-    dispatch(
-      fetchPizzas({
-        sortObj,
-        pageIndex,
-        categoryId,
-      }),
-    );
-  };
+  const { categoryId, sortType, searchValue, pageIndex } = useSelector(
+    (state: RootState) => state.filter,
+  );
 
   useEffect(() => {
-    if (isMounted.current) {
-      const queryString = qs.stringify({
-        pageIndex,
-        sortType,
-        categoryId,
-      });
-
-      navigte(`?${queryString}`);
-    }
-    isMounted.current = true;
-    // eslint-disable-next-line
-  }, [sortType, categoryId, pageIndex]);
-
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1)) as unknown as FilterSliceState;
-      dispatch(setFilters(params));
-      isUrl.current = true;
-    }
+    dispatch(fetchPizzas());
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (!isUrl.current) {
-      getPizzas();
-    }
-    isUrl.current = false;
-    // eslint-disable-next-line
-  }, [sortType, categoryId, pageIndex]);
-
-  // =====================  v2 ========================================
-
-  // const dispatch = useDispatch();
-  // const { items, status } = useSelector((state) => state.pizza);
-  // const { searchValue, pageIndex, categoryId } = useSelector((state) => state.filter);
-
-  // const filteredItems =
-  //   categoryId === 'All'
-  //     ? items
-  //     : items.filter((item) => item.category === categoryId.toLowerCase());
-
-  // const visibleItems = myFunc(searchItems(filteredItems, searchValue), pageIndex, 3);
-
-  // const getPizzas = async () => {
-  //   dispatch(fetchPizzas());
-  // };
-
-  // useEffect(() => {
-  //   getPizzas();
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // =====================  v2 ========================================
+  const resFilteredItems = filteredItems(items, sortType, categoryId, searchValue);
+  const visibleItems = visibleFunc(resFilteredItems, pageIndex, amountVisiblePiizas);
 
   return (
     <>
@@ -161,24 +37,43 @@ const Home: FC = () => {
         <Catigories />
         <Sort />
       </div>
-      <h2 className="content__title">All pizzas</h2>
+      <h2 className="content__title">{categoryId} pizzas</h2>
       {status === 'error' ? (
         <div className="content__error-info">
           <h2>
-            Something wents wrong <span>😕</span>
+            Something went wrong <span>😕</span>
           </h2>
           <p>Unfortunately, the pizzas couldn't be loaded. Try again later.</p>
         </div>
       ) : (
-        <div className="content__items">
-          {status === 'loading'
-            ? [...new Array(4)].map((_, i) => <Skeleton key={i} />)
-            : visibleItems.map((pizza, i: number) => {
-                return <PizzaBlock key={i} {...pizza} />;
-              })}
-        </div>
+        <>
+          {status === 'loading' ? (
+            <div className="content__items">
+              {[...new Array(4)].map((_, i) => (
+                <Skeleton key={i} />
+              ))}
+            </div>
+          ) : visibleItems.length === 0 ? (
+            <div className="content">
+              <h2>
+                In category <span>"{categoryId}"</span> pizza: "<span>{searchValue}</span>" is not
+                found
+              </h2>
+            </div>
+          ) : (
+            <>
+              <TransitionGroup className="content__items">
+                {visibleItems.map((pizza) => (
+                  <CSSTransition key={pizza.id} timeout={300} classNames="my-pizza">
+                    <PizzaBlock key={pizza.id} {...pizza} />
+                  </CSSTransition>
+                ))}
+              </TransitionGroup>
+              <Pagination />
+            </>
+          )}
+        </>
       )}
-      <Pagination />
     </>
   );
 };

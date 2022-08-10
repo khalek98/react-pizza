@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { PizzaArr, FetchPizzasArgs, PizzaSliceStates } from '../../@types/types';
+import { PizzaArr, PizzaSliceStates } from '../../@types/types';
 
 export enum Status {
   LOADING = 'loading',
@@ -8,24 +8,24 @@ export enum Status {
   ERROR = 'error',
 }
 
-export const fetchPizzas = createAsyncThunk<PizzaArr[], FetchPizzasArgs>(
-  'pizza/fetchPizzasStatus',
-  async ({ sortObj, pageIndex, categoryId }) => {
-    const { data } = await axios.get<PizzaArr[]>(
-      `https://62de9b69976ae7460bde168f.mockapi.io/pizzas?page=${pageIndex}&limit=3&sortBy=${
-        sortObj.category
-      }&order=${sortObj.sort}${
-        categoryId !== 'All' ? '&category=' + categoryId.toLowerCase() : ''
-      }`,
-    );
-    return data;
-  },
-);
+// export const fetchPizzas = createAsyncThunk<PizzaArr[], FetchPizzasArgs>(
+//   'pizza/fetchPizzasStatus',
+//   async ({ sortObj, pageIndex, categoryId }) => {
+//     const { data } = await axios.get<PizzaArr[]>(
+//       `https://62de9b69976ae7460bde168f.mockapi.io/pizzas?page=${pageIndex}&limit=3&sortBy=${
+//         sortObj.category
+//       }&order=${sortObj.sort}${
+//         categoryId !== 'All' ? '&category=' + categoryId.toLowerCase() : ''
+//       }`,
+//     );
+//     return data;
+//   },
+// );
 
-// export const fetchPizzas = createAsyncThunk('pizz/fetchPizzsStatus', async () => {
-//   const { data } = await axios.get('https://62de9b69976ae7460bde168f.mockapi.io/pizzas');
-//   return data;
-// });
+export const fetchPizzas = createAsyncThunk<PizzaArr[]>('pizz/fetchPizzsStatus', async () => {
+  const { data } = await axios.get('https://62de9b69976ae7460bde168f.mockapi.io/pizzas');
+  return data;
+});
 
 const initialState: PizzaSliceStates = {
   items: [],

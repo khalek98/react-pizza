@@ -44,8 +44,10 @@ export type PizzaArr = {
   price: number;
   imageUrl: string;
   sizes: number[];
-  types: number[];
+  types: string[];
   rating: number;
+  category: string;
+  counter?: number;
 };
 
 export interface PizzaSliceStates {

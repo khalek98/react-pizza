@@ -1,76 +1,96 @@
 import classNames from 'classnames';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { CartItem } from '../../@types/types';
 // import classNames from 'classnames';
 
 import { addItem, decItem, removeItem, selectCartItemById } from '../../redux/Slices/cartSlice';
 
-const typeNames = ['thin', 'traditional', 'philadelphia'];
+export const typeNames = ['thin', 'traditional', 'philadelphia'];
+const priceIncreace = {
+  types: {
+    thin: 0,
+    traditional: 3,
+    philadelphia: 5,
+  },
+  sizes: {
+    '26': 0,
+    '30': 3,
+    '40': 5,
+  },
+};
 
-type PizzaBlockProps = {
+export type PizzaBlockProps = {
   id: string;
   name: string;
   price: number;
   imageUrl: string;
   sizes: number[];
-  types: number[];
+  types: string[];
   rating: number;
+  counter?: number;
 };
 
-const PizzaBlock: FC<PizzaBlockProps> = ({ id, name, price, imageUrl, sizes }) => {
+const PizzaBlock: FC<PizzaBlockProps> = (props) => {
+  return (
+    <div className="pizza-block">
+      <Link to={`/pizza/${props.id}`}>
+        <img className="pizza-block__image" src={props.imageUrl} alt="Pizza" />
+        <h4 className="pizza-block__title">{props.name}</h4>
+      </Link>
+      <SelectorBlock {...props} />
+    </div>
+  );
+};
+
+export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, sizes }) => {
   const [activeType, setActiveType] = useState<string>('thin');
   const [activeSize, setActiveSize] = useState(0);
-  const addedCount = useSelector(selectCartItemById(id));
+  const addedItem = useSelector(selectCartItemById(`${id}-${activeType}-${activeSize}`));
+  const addedCount = addedItem && addedItem.count;
+
+  //@ts-ignore
+  const increcedPrice = price + priceIncreace.types[activeType] + priceIncreace.sizes[activeSize];
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    setActiveSize(sizes[0]);
+    // eslint-disable-next-line
+  }, []);
+
   const onAddItem = () => {
     const item: CartItem = {
-      id,
+      id: `${id}-${activeType}-${activeSize}`,
       name,
-      price,
+      price: increcedPrice,
       imageUrl,
       type: activeType,
-      size: sizes[activeSize],
-      count: 0,
+      size: activeSize,
+      count: 1,
     };
+    // console.log(item);
     dispatch(addItem(item));
   };
 
-  const onIncItem = () => {
-    dispatch(addItem({ id } as CartItem));
-  };
+  // const onIncItem = () => {
+  //   dispatch(addItem({ id: `${id}-${activeType}-${sizes[activeSize]}` } as CartItem));
+  // };
 
   const onDecItem = () => {
-    if (addedCount && addedCount.count - 1 <= 0) {
-      dispatch(removeItem(id));
+    if (addedCount && addedCount - 1 <= 0) {
+      dispatch(removeItem(`${id}-${activeType}-${sizes[activeSize]}`));
     } else {
-      dispatch(decItem(id));
+      dispatch(decItem(`${id}-${activeType}-${sizes[activeSize]}`));
     }
   };
 
-  // const classNameForType = classNames('pizza-block__selector-type')
-
   return (
-    <div className="pizza-block">
-      <Link to={`/pizza/${id}`}>
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{name}</h4>
-      </Link>
+    <>
       <div className="pizza-block__selector">
         <ul>
-          {/* {types.map((type, i) => {
-            return (
-              <li
-                key={i}
-                className={activeType === type || (type === 1 && i === 0) ? 'active' : ''}
-                onClick={() => setActiveType(type)}>
-                {type === 0 ? typeNames[0] : typeNames[1]}
-              </li>
-            );
-          })} */}
           {typeNames.map((type, i) => {
             return (
               <li
@@ -80,6 +100,10 @@ const PizzaBlock: FC<PizzaBlockProps> = ({ id, name, price, imageUrl, sizes }) =
                 })}
                 onClick={() => setActiveType(type)}>
                 {type}
+                {i !== 0 && type === activeType && (
+                  // @ts-ignore
+                  <div className="price-increase">+{priceIncreace.types[activeType]} $</div>
+                )}
               </li>
             );
           })}
@@ -88,16 +112,20 @@ const PizzaBlock: FC<PizzaBlockProps> = ({ id, name, price, imageUrl, sizes }) =
           {sizes.map((size, i) => (
             <li
               key={i}
-              onClick={() => setActiveSize(i)}
-              className={activeSize === i ? 'active' : ''}>
+              onClick={() => setActiveSize(size)}
+              className={size === activeSize ? 'active' : ''}>
               {size}cm
+              {i !== 0 && size === activeSize && (
+                // @ts-ignore
+                <div className="price-increase">+{priceIncreace.sizes[activeSize]} $</div>
+              )}
             </li>
           ))}
         </ul>
       </div>
       <div className="pizza-block__bottom">
-        <div className="pizza-block__price">from {price} $</div>
-        {addedCount && addedCount.count ? (
+        <div className="pizza-block__price">price: {increcedPrice} $</div>
+        {addedCount ? (
           <div className="cart__wrapper cart__wrapper-bottom">
             <div className="cart__item-count">
               <div
@@ -119,9 +147,9 @@ const PizzaBlock: FC<PizzaBlockProps> = ({ id, name, price, imageUrl, sizes }) =
                   />
                 </svg>
               </div>
-              <b>{addedCount.count}</b>
+              <b>{addedCount}</b>
               <div
-                onClick={onIncItem}
+                onClick={onAddItem}
                 className="button button--outline button--circle cart__item-count-plus">
                 <svg
                   width="10"
@@ -158,7 +186,7 @@ const PizzaBlock: FC<PizzaBlockProps> = ({ id, name, price, imageUrl, sizes }) =
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

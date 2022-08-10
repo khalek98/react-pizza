@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { lazy, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import logoPizza from '../assets/img/pizza-logo.svg';
 import { selectCart } from '../redux/Slices/cartSlice';
-import SearchPanel from './SearchPanel';
+const SearchPanel = lazy(() => import('./SearchPanel'));
 
 const Header = () => {
   const { totalPrice, items } = useSelector(selectCart);
@@ -33,7 +33,9 @@ const Header = () => {
             </div>
           </div>
         </Link>
-        {pathname !== '/cart' && pathname !== '/page404' && <SearchPanel />}
+        {pathname !== '/cart' && pathname !== '/page404' && !pathname.includes('/pizza') && (
+          <SearchPanel />
+        )}
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>{totalPrice} $</span>

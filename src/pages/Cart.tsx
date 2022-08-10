@@ -1,9 +1,10 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import CartItem from '../components/CartItem';
-import { clearItems, selectCart } from '../redux/Slices/cartSlice';
 import CartEmpty from '../components/CartEmpty';
-import { FC } from 'react';
+import { clearItems, selectCart } from '../redux/Slices/cartSlice';
 
 const Cart: FC = () => {
   const dispatch = useDispatch();
@@ -104,11 +105,9 @@ const Cart: FC = () => {
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
-              {' '}
               Total pizzas: <b>{totalCount} pcs.</b>{' '}
             </span>
             <span>
-              {' '}
               Total amount: <b>{totalPrice} $</b>{' '}
             </span>
           </div>

@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { SortType } from '../@types/types';
 
@@ -13,7 +13,7 @@ const sortArr: SortType[] = [
   'Price (Low-High)',
 ];
 
-const Sort: FC = memo(() => {
+const Sort: FC = () => {
   const dispatch = useDispatch();
 
   const [sortPopup, setSortPopup] = useState(false);
@@ -41,7 +41,7 @@ const Sort: FC = memo(() => {
     <div ref={sortRef} className="sort">
       <div onClick={() => setSortPopup(!sortPopup)} className="sort__label">
         <svg
-          // style= {sortPopup ? { transform: 'rotateX(180deg)' } : ''}
+          style={sortPopup ? { transform: 'rotateX(180deg)' } : {}}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -73,6 +73,6 @@ const Sort: FC = memo(() => {
       )}
     </div>
   );
-});
+};
 
 export default Sort;

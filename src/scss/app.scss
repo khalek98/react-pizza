@@ -14,10 +14,21 @@ body {
   margin: 50px auto;
   border-radius: 10px;
   max-width: 1400px;
+
+  @media (max-width: 430px) {
+    width: 85%;
+  }
 }
 
 .content {
   padding: 40px 0;
+
+  h2 {
+    span {
+      word-wrap: break-word;
+      font-weight: 700;
+    }
+  }
 
   &__error-info {
     text-align: center;
@@ -31,6 +42,7 @@ body {
 
       span {
         font-size: 36px;
+        width: 80px;
       }
     }
 
@@ -73,6 +85,28 @@ body {
 
     @media (max-width: 1000px) {
       flex-direction: column-reverse;
+    }
+  }
+
+  @media (max-width: 629px) {
+    &__error-info {
+      width: 80%;
+      margin: 100px auto 70px;
+
+      h2 {
+        font-size: 26px;
+        line-height: 36px;
+        margin-bottom: 10px;
+
+        span {
+          font-size: 36px;
+        }
+      }
+
+      p {
+        font-size: 20px;
+        line-height: 30px;
+      }
     }
   }
 }

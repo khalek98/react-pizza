@@ -1,5 +1,5 @@
 .root {
-  display: inline-flex;
+  display: flex;
   column-gap: 10px;
   justify-content: center;
   width: 100%;
@@ -27,6 +27,28 @@
     &:hover {
       background-color: #fe5f1e;
       color: #fff;
+    }
+  }
+}
+
+@media (max-width: 639px) {
+  .root {
+    flex-wrap: wrap;
+    row-gap: 15px;
+    width: 250px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 374px) {
+  .root {
+    width: 70%;
+    a {
+      height: 35px;
+      width: 35px;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 33px;
     }
   }
 }

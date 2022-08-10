@@ -1,11 +1,11 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { setCategoryId } from '../redux/Slices/filterSlise';
+import { setCategoryId, setPageIndex } from '../redux/Slices/filterSlise';
 import { RootState, useAppDispatch } from '../redux/store';
 
 const categoriesArr = ['All', 'Grill', 'Meat', 'Vegan', 'Spicy', 'Closed'];
 
-const Catigories: FC = memo(() => {
+const Catigories: FC = () => {
   const dispatch = useAppDispatch();
   const { categoryId } = useSelector((state: RootState) => state.filter);
 
@@ -16,7 +16,10 @@ const Catigories: FC = memo(() => {
           key={i}
           tabIndex={i}
           className={categoryId === label ? 'active' : ''}
-          onClick={() => dispatch(setCategoryId(label))}>
+          onClick={() => {
+            dispatch(setCategoryId(label));
+            dispatch(setPageIndex(1));
+          }}>
           {label}
         </li>
       );
@@ -29,6 +32,6 @@ const Catigories: FC = memo(() => {
       <ul>{renderCategoryItems(categoriesArr)}</ul>
     </div>
   );
-});
+};
 
 export default Catigories;

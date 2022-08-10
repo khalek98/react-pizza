@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /react-pizza-html
+/src/pages/HomeOld.txt
 
 # testing
 /coverage
