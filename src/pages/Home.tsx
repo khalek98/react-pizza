@@ -60,7 +60,11 @@ const Home: FC = () => {
             <>
               <TransitionGroup className="content__items">
                 {visibleItems.map((pizza) => (
-                  <CSSTransition key={pizza.id} timeout={300} classNames="my-pizza">
+                  <CSSTransition
+                    exit={false}
+                    key={pizza.id}
+                    timeout={{ enter: 300 }}
+                    classNames="my-pizza">
                     <PizzaBlock key={pizza.id} {...pizza} />
                   </CSSTransition>
                 ))}

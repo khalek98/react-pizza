@@ -1,7 +1,8 @@
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
-import { amountVisiblePiizas } from '../../pages/Home';
+import { animateScroll } from 'react-scroll';
 
+import { amountVisiblePiizas } from '../../pages/Home';
 import { setPageIndex } from '../../redux/Slices/filterSlise';
 import { RootState } from '../../redux/store';
 import { filteredItems } from '../../utils/filteredItemsFunc';
@@ -25,12 +26,17 @@ const Pagination = () => {
 
   // console.log(pageCount);
 
+  const handleSetPage = (selected: number) => {
+    dispatch(setPageIndex(selected));
+    animateScroll.scrollTo(50, { duration: 600, smooth: true, isDynamic: true });
+  };
+
   return (
     <ReactPaginate
       className={styles.root}
       breakLabel="..."
       nextLabel=">"
-      onPageChange={(e) => dispatch(setPageIndex(e.selected + 1))}
+      onPageChange={(e) => handleSetPage(e.selected + 1)}
       pageCount={pageCount}
       forcePage={pageIndex - 1}
       previousLabel="<"
