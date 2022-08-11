@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Helmet } from 'react-helmet';
 
 import { Categories, Pagination, PizzaBlock, Skeleton, Sort } from '../components';
 
@@ -29,6 +30,10 @@ const Home: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <meta name="description" content="Pizza Shop" />
+        <title>Main page | Pizza Shop</title>
+      </Helmet>
       <div className="content__top">
         <Categories />
         <Sort />

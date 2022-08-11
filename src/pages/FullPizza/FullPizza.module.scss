@@ -1,4 +1,5 @@
 .wrapper {
+  position: relative;
   display: flex;
 }
 
@@ -40,10 +41,6 @@
     flex-direction: column;
     align-items: center;
   }
-
-  //   .right {
-  //     padding: 0;
-  //   }
 
   .title {
     font-size: 26px;
