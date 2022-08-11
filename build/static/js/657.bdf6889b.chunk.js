@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkreact_pizza=self.webpackChunkreact_pizza||[]).push([[657,419],{4949:function(e,n,t){t.r(n);var a=t(4270),r=t(3982),s=t(184);n.default=function(){return(0,s.jsxs)(s.Fragment,{children:[(0,s.jsxs)(a.q,{children:[(0,s.jsx)("meta",{name:"description",content:"Page Not Found (404)"}),(0,s.jsx)("title",{children:"Not Found | Pizza Shop"})]}),(0,s.jsx)(r.vr,{})]})}}}]);
+//# sourceMappingURL=657.bdf6889b.chunk.js.map
