@@ -1,4 +1,6 @@
-# Deployed app - [https://react-pizza-khalek.herokuapp.com/](https://react-pizza-khalek.herokuapp.com/)
+# Pizza shop
+
+Deployed app - [https://react-pizza-khalek.herokuapp.com/](Link to app)
 
 Stack:
 
