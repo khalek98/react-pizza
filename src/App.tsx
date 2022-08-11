@@ -2,11 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 
 import Header from './components/Header';
-// import Home from './pages/Home';
-// import Cart from './pages/Cart';
-
 import './scss/app.scss';
-// import Skeleton from './components/PizzaBlock/Skeleton';
 
 const FullPizza = lazy(() => import('./pages/FullPizza'));
 const NotFound = lazy(() => import('./pages/NotFound'));

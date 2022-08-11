@@ -2,11 +2,7 @@ import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
-import Catigories from '../components/Catigories';
-import Pagination from '../components/Pagination';
-import PizzaBlock from '../components/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Sort from '../components/Sort';
+import { Categories, Pagination, PizzaBlock, Skeleton, Sort } from '../components';
 
 import { RootState, useAppDispatch } from '../redux/store';
 import { fetchPizzas } from '../redux/Slices/pizzaSlice';
@@ -34,7 +30,7 @@ const Home: FC = () => {
   return (
     <>
       <div className="content__top">
-        <Catigories />
+        <Categories />
         <Sort />
       </div>
       <h2 className="content__title">{categoryId} pizzas</h2>
