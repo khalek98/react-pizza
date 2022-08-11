@@ -1,6 +1,6 @@
 # Pizza shop
 
-Deployed app - [https://react-pizza-khalek.herokuapp.com/d](https://react-pizza-khalek.herokuapp.com/)
+[Link to deployed app](https://react-pizza-khalek.herokuapp.com/)
 
 Stack:
 
