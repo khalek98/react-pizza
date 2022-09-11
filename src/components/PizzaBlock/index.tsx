@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { CartItem } from '../../@types/types';
 // import classNames from 'classnames';
 
-import { addItem, decItem, removeItem, selectCartItemById } from '../../redux/Slices/cartSlice';
+import {
+  addItem,
+  decItem,
+  removeItem,
+  selectCartItemById,
+} from '../../redux/Slices/cartSlice';
 
 export const typeNames = ['thin', 'traditional', 'philadelphia'];
 const priceIncreace = {
@@ -45,14 +50,23 @@ const PizzaBlock: FC<PizzaBlockProps> = (props) => {
   );
 };
 
-export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, sizes }) => {
+export const SelectorBlock: FC<PizzaBlockProps> = ({
+  id,
+  name,
+  imageUrl,
+  price,
+  sizes,
+}) => {
   const [activeType, setActiveType] = useState<string>('thin');
   const [activeSize, setActiveSize] = useState(0);
-  const addedItem = useSelector(selectCartItemById(`${id}-${activeType}-${activeSize}`));
-  const addedCount = addedItem && addedItem.count;
+  const addedItem = useSelector(
+    selectCartItemById(`${id}-${activeType}-${activeSize}`),
+  );
+  const addedCount = addedItem ? addedItem.count : null;
 
-  //@ts-ignore
-  const increcedPrice = price + priceIncreace.types[activeType] + priceIncreace.sizes[activeSize];
+  const increcedPrice =
+    //@ts-ignore
+    price + priceIncreace.types[activeType] + priceIncreace.sizes[activeSize];
 
   const dispatch = useDispatch();
 
@@ -71,7 +85,6 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
       size: activeSize,
       count: 1,
     };
-    // console.log(item);
     dispatch(addItem(item));
   };
 
@@ -81,9 +94,9 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
 
   const onDecItem = () => {
     if (addedCount && addedCount - 1 <= 0) {
-      dispatch(removeItem(`${id}-${activeType}-${sizes[activeSize]}`));
+      dispatch(removeItem(`${id}-${activeType}-${activeSize}`));
     } else {
-      dispatch(decItem(`${id}-${activeType}-${sizes[activeSize]}`));
+      dispatch(decItem(`${id}-${activeType}-${activeSize}`));
     }
   };
 
@@ -98,11 +111,14 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
                 className={classNames('pizza-block__selector-type', {
                   active: activeType === type,
                 })}
-                onClick={() => setActiveType(type)}>
+                onClick={() => setActiveType(type)}
+              >
                 {type}
                 {i !== 0 && type === activeType && (
-                  // @ts-ignore
-                  <div className="price-increase">+{priceIncreace.types[activeType]} $</div>
+                  <div className="price-increase">
+                    {/* @ts-ignore */}
+                    {/* @ts-ignore */}+{priceIncreace.types[activeType]} $
+                  </div>
                 )}
               </li>
             );
@@ -113,11 +129,14 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
             <li
               key={i}
               onClick={() => setActiveSize(size)}
-              className={size === activeSize ? 'active' : ''}>
+              className={size === activeSize ? 'active' : ''}
+            >
               {size}cm
               {i !== 0 && size === activeSize && (
-                // @ts-ignore
-                <div className="price-increase">+{priceIncreace.sizes[activeSize]} $</div>
+                <div className="price-increase">
+                  {/* @ts-ignore */}
+                  {/* @ts-ignore */}+{priceIncreace.sizes[activeSize]} $
+                </div>
               )}
             </li>
           ))}
@@ -130,13 +149,15 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
             <div className="cart__item-count">
               <div
                 onClick={onDecItem}
-                className="button button--outline button--circle cart__item-count-minus">
+                className="button button--outline button--circle cart__item-count-minus"
+              >
                 <svg
                   width="10"
                   height="10"
                   viewBox="0 0 10 10"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
                     fill="#EB5A1E"
@@ -150,13 +171,15 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
               <b>{addedCount}</b>
               <div
                 onClick={onAddItem}
-                className="button button--outline button--circle cart__item-count-plus">
+                className="button button--outline button--circle cart__item-count-plus"
+              >
                 <svg
                   width="10"
                   height="10"
                   viewBox="0 0 10 10"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M5.92001 3.84V5.76V8.64C5.92001 9.17016 5.49017 9.6 4.96001 9.6C4.42985 9.6 4.00001 9.17016 4.00001 8.64L4 5.76L4.00001 3.84V0.96C4.00001 0.42984 4.42985 0 4.96001 0C5.49017 0 5.92001 0.42984 5.92001 0.96V3.84Z"
                     fill="#EB5A1E"
@@ -170,13 +193,17 @@ export const SelectorBlock: FC<PizzaBlockProps> = ({ id, name, imageUrl, price, 
             </div>
           </div>
         ) : (
-          <div className="button button--outline button--add" onClick={onAddItem}>
+          <div
+            className="button button--outline button--add"
+            onClick={onAddItem}
+          >
             <svg
               width="12"
               height="12"
               viewBox="0 0 12 12"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M10.8 4.8H7.2V1.2C7.2 0.5373 6.6627 0 6 0C5.3373 0 4.8 0.5373 4.8 1.2V4.8H1.2C0.5373 4.8 0 5.3373 0 6C0 6.6627 0.5373 7.2 1.2 7.2H4.8V10.8C4.8 11.4627 5.3373 12 6 12C6.6627 12 7.2 11.4627 7.2 10.8V7.2H10.8C11.4627 7.2 12 6.6627 12 6C12 5.3373 11.4627 4.8 10.8 4.8Z"
                 fill="white"

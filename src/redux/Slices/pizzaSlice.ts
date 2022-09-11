@@ -22,10 +22,15 @@ export enum Status {
 //   },
 // );
 
-export const fetchPizzas = createAsyncThunk<PizzaArr[]>('pizz/fetchPizzsStatus', async () => {
-  const { data } = await axios.get('https://62de9b69976ae7460bde168f.mockapi.io/pizzas');
-  return data;
-});
+export const fetchPizzas = createAsyncThunk<PizzaArr[]>(
+  'pizza/fetchPizzsStatus',
+  async () => {
+    const { data } = await axios.get(
+      'https://62de9b69976ae7460bde168f.mockapi.io/pizzas',
+    );
+    return data;
+  },
+);
 
 const initialState: PizzaSliceStates = {
   items: [],
