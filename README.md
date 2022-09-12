@@ -1,9 +1,8 @@
-# Pizza shop
-
-[Link to deployed app](https://react-pizza-khalek.herokuapp.com/)
+# Pizza shop - [**Link to deployed app**](https://react-pizza-khalek.herokuapp.com/)
 
 In this app, you can find pizza by name, choose a category, and sort by popular, price, or name. Thereafter you can choose the dough and size of the pizza and then added to the cart.
-This app includes packages like:
+___
+### This app includes packages like:
 
 - ReactJS (TypeScript)
 - Mockapi (Fake remote backend)
