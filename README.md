@@ -1,4 +1,4 @@
-# Pizza shop - [**Link to deployed app**](https://react-pizza-khalek.herokuapp.com/)
+# Pizza shop - [**Link to deployed app**](https://react-pizza-khalek.netlify.app/)
 
 In this app, you can find pizza by name, choose a category, and sort by popular, price, or name. Thereafter you can choose the dough and size of the pizza and then added to the cart.
 ___
